@@ -17,18 +17,22 @@ echo $time_error
 
 time_current=$(date +%y%m%d%H%M) ; echo $time_current ;
 time_gap=$(expr $time_current - $time_error) ; echo $time_gap
+time_limit=50 #minute
 
-if [ $time_gap -lt 50 ] ; then
+time_gap=70
+if [ $time_gap -lt $time_limit ] ; then
    if [ ! -f $LAZY_FILE ] ;then
       systemctl restart mariadb
-      echo "$todaydate: INFO : Maria DB restarted "     
+      echo "$todaydate: INFO: Maria DB restarted "     
       touch $LAZY_FILE
+   else
+      echo "$todaydate: INFO: Lazy file found no need to restart Maria DB, it is in $time_limit  "
    fi
 else 
    if [ -f $LAZY_FILE ] ; then
       rm $LAZY_FILE
-      echo "$todaydate: INFO : Lazy file removed   "
+      echo "$todaydate: INFO: Lazy file removed"
    fi      
-   echo "$todaydate: INFO : Maria DB is healthy no OOM  "
+   echo "$todaydate: INFO: Maria DB is healthy no OOM  "
 fi
 
