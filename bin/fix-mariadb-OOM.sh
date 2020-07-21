@@ -10,7 +10,7 @@ today=$(date +%y%m%d)
 #todaydate=200515
 LOGFILE="/var/log/mariadb/mariadb.log"
 basedir=/root/fix-mariadb-oom
-LAZY_FILE="$basedir/lazy_file"
+LAZY_FILE="$basedir/conf/lazy_file"
 
 time_error=$(grep -i "Out of memory" $LOGFILE | tail -1 | cut -f1-2 -d\ | sed -e 's/ //' | cut -f1-2 -d:| sed -e 's/://' )
 echo $time_error
