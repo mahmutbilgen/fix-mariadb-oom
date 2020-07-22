@@ -13,13 +13,14 @@ basedir=/root/fix-mariadb-oom
 LAZY_FILE="$basedir/conf/lazy_file"
 
 time_error=$(grep -i "Out of memory" $LOGFILE | tail -1 | cut -f1-2 -d\ | sed -e 's/ //' | cut -f1-2 -d:| sed -e 's/://' )
-echo $time_error
+#echo $time_error
 
-time_current=$(date +%y%m%d%H%M) ; echo $time_current ;
-time_gap=$(expr $time_current - $time_error) ; echo $time_gap
+time_current=$(date +%y%m%d%H%M) ; #echo $time_current ;
+time_gap=$(expr $time_current - $time_error) ; #echo $time_gap
 time_limit=50 #minute
 
-time_gap=70
+echo " current time: $time_current, error time: $time_error, gap:$ime_gap "
+#time_gap=70
 if [ $time_gap -lt $time_limit ] ; then
    if [ ! -f $LAZY_FILE ] ;then
       systemctl restart mariadb
