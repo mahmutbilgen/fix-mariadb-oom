@@ -1,11 +1,12 @@
 #!/bin/bash
-# version=1.1
+# version=1.2
 # cheking Maria DB OOM and restart service
 #
+# 2020-08-22 1.2 MB: changed datetime format
 # 2020-07-19 1.1 MB: added more control
 # 2020-06-06 1.0 MB: initial version
 #
-todaydate=$(date +%y%m%d_%H:%M)
+todaydate=$(date +%y%m%d %H:%M)
 today=$(date +%y%m%d)
 #todaydate=200515
 LOGFILE="/var/log/mariadb/mariadb.log"
