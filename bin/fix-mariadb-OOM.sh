@@ -11,15 +11,19 @@ today=$(date +%y%m%d)
 LOGFILE="/var/log/mariadb/mariadb.log"
 basedir=/root/fix-mariadb-oom
 LAZY_FILE="$basedir/conf/lazy_file"
+VERBOSE=0
 
-time_error=$(grep -i "Out of memory" $LOGFILE | tail -1 | cut -f1-2 -d\ | sed -e 's/ //' | cut -f1-2 -d:| sed -e 's/://' )
+#time_error=$(grep -i "Out of memory" $LOGFILE | tail -1 | cut -f1-2 -d\ | sed -e 's/ //' | cut -f1-2 -d:| sed -e 's/://' )
+time_error=$(grep -i "Out of memory" $LOGFILE | tail -1 | cut -f1 -d'[' | sed -e 's/ *//' )
+time_error=$(date -d  "$time_error"  "+%y%m%d%H%M")
+#200813  1:04:24)
 #echo $time_error
 
 time_current=$(date +%y%m%d%H%M) ; #echo $time_current ;
 time_gap=$(expr $time_current - $time_error) ; #echo $time_gap
 time_limit=50 #minute
 
-echo " current time: $time_current, error time: $time_error, gap:$ime_gap "
+[ $VERBOSE -eq 0 ] && echo "$todaydate: INFO: current time: $time_current, error time: $time_error, gap:$time_gap "
 #time_gap=70
 if [ $time_gap -lt $time_limit ] ; then
    if [ ! -f $LAZY_FILE ] ;then
