@@ -30,15 +30,19 @@ time_limit=30 #minute
 [ $VERBOSE -eq 0 ] && echo "$todaydate: INFO: current time: $time_current, error time: $time_error, gap:$time_gap minutes"
 #time_gap=70
 if [ $time_gap -lt $time_limit ] ; then
+
    if [ ! -f $LAZY_FILE ] ;then
       systemctl restart mariadb
-      echo "$todaydate: INFO: Maria DB restarted "     
-      touch $LAZY_FILE ; $(date +%s) >$LAZY_FILE
+      echo "$todaydate: WARN: Maria DB restarted "     
+      touch $LAZY_FILE ; echo $(date +%s) >$LAZY_FILE
    else
-      echo "$todaydate: INFO: Lazy file found checking Maria DB, it is in $time_limit  "
-      if [ $(cat $LAZY_FILE) -gt $time_error] ;then
+     echo "$todaydate: INFO: Lazy file found checking Maria DB, it is in $time_limit  "
+     time_lazy="$(cat $LAZY_FILE)"
+      # debug : cat $LAZY_FILE
+      [ $VERBOSE -eq 0 ] && echo "$todaydate: INFO: time_lazy: $time_lazy , current time: $time_current, error time: $time_error, gap:$time_gap minutes"
+      if [ "$time_lazy" -lt "$time_error" ] ;then
           systemctl restart mariadb
-          echo "$todaydate: INFO: Lazy file found but Error time greater than  last check  restarting Maria DB,  "
+          echo "$todaydate: WARN: Lazy file found but Error time greater than  Lazy File time ;  Maria DB restarted ,  "
       fi
    fi
 else 
